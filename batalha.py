@@ -1,10 +1,12 @@
 import random
 import os 
 
+#tabuleiro em forma de matriz do jogo
 tabuleiroJogadorMatriz = [["🌊"for i in range(10)] for i in range(5)]
 tabuleiroComputadorMatriz = [["🌊" for i in range(10)] for i in range(5)]
 jogadasFeitasComp = []
 
+#função de imprimir as boas vindas ao jogo e pedindo nome do jogador para poder interagir mais adiante
 def imprimeBoasVindas():
     print("\033[1;37m\nSEJA BEM VINDO(A) À BATALHA NAVAL\n\033[0m")
     print("         |    |    |")
@@ -19,6 +21,7 @@ def imprimeBoasVindas():
     nomeJogador = input("\nQual é seu nome? ").upper()
     return nomeJogador
 
+#mostrando o tabuleiro do computador com sua coluna e linhas numeradas para melhor entendimento
 def tabuleiroComputador(embarcacoesComp):
     print("\033[1;37m\nTABULEIRO DO COMPUTADOR\n\033[0m")
     #numero das colunas
@@ -37,9 +40,11 @@ def tabuleiroComputador(embarcacoesComp):
         print()
     print(f"\nEMBARCAÇÕES RESTANTES: {embarcacoesComp}\n")
 
+#função de separar os tabuleiros para ficar mais organizado na jogatina
 def separarTabuleiros():
     print("-------------------------------------------")
 
+#função do tabuleiro do jogador interagindo com o nome
 def tabuleiroJogador(embarcacoesJogador, nomeJogador, mostrarNavios=False):
     print(f"\033[1;37m\nTABULEIRO DE {nomeJogador}\n\033[0m")
     #numero das colunas
@@ -58,6 +63,7 @@ def tabuleiroJogador(embarcacoesJogador, nomeJogador, mostrarNavios=False):
         print()
     print(f"\nEMBARCAÇÕES RESTANTES: {embarcacoesJogador}\n")
 
+#aqui é necessário pedir as coordenadas de posicionamento do jogador 
 def coordenadasJogador(nomeJogador, tabuleiroJogadorMatriz):
     embarcacoesColocadas=0 
     totalEmbarcacoes = 7   
@@ -66,7 +72,7 @@ def coordenadasJogador(nomeJogador, tabuleiroJogadorMatriz):
         faltam = totalEmbarcacoes - embarcacoesColocadas
         print(f"\nVocê ainda precisa posicionar {faltam} embarcação(ões).\n")
         linha = int(input(f"{nomeJogador.capitalize()}, digite a linha da sua {embarcacoesColocadas + 1}ª embarcação (de 0 a 4): "))
-        coluna = int(input(f"{nomeJogador.capitalize()},digite a coluna da sua {embarcacoesColocadas + 1}ª embarcação (de 0 a 9): "))
+        coluna = int(input(f"{nomeJogador.capitalize()}, digite a coluna da sua {embarcacoesColocadas + 1}ª embarcação (de 0 a 9): "))
         print()
 
         if 0 <= linha <= 4 and 0 <= coluna <= 9:
@@ -78,6 +84,7 @@ def coordenadasJogador(nomeJogador, tabuleiroJogadorMatriz):
         else:
             print("Atenção, essas coordenadas são inválidas!\n")
 
+#coordenadas de posicionamento do computador randomizado 
 def coordenadasComputador():
     embarcacoesColocadas=0    
     for tentativa in range(1000):
@@ -90,6 +97,7 @@ def coordenadasComputador():
             tabuleiroComputadorMatriz[linha][coluna] = "🚢"
             embarcacoesColocadas += 1
 
+#função do ataque do computador, randomizando 
 def ataqueComputador(embarcacoesJogador):
     while True:
         ataqueCompLinha = random.randint(0, 4)
@@ -105,7 +113,8 @@ def ataqueComputador(embarcacoesJogador):
                     embarcacoesJogador -= 1
                     print(f"\033[32m\nO computador jogou as coordenadas linha: {ataqueCompLinha} e coluna: {ataqueCompColuna} e atingiu uma embarcação sua!\033[0m")
                 return embarcacoesJogador
-    
+
+#função de ataque do jogador, informando tudo que necessário, acertou água, navio, ou se ja jogou na posição
 def ataqueJogador(nomeJogador, embarcacoesComputador):
     ataqueJogadorLinha = int(input(f"{nomeJogador.capitalize()}, digite a linha da embarcação que deseja atacar (de 0 a 4): "))
     ataqueJogadorColuna = int(input(f"{nomeJogador.capitalize()},digite a coluna da embarcação que deseja atacar(de 0 a 9): "))
@@ -124,6 +133,7 @@ def ataqueJogador(nomeJogador, embarcacoesComputador):
         mensagem = "\nAtenção, essas coordenadas são inválidas!\n"
     return embarcacoesComputador, mensagem
 
+#função principal da batalha do jogo, fazendo estrutura de repetição com as funções do ataque d o jogador e computador
 def batalha(nomeJogador, embarcacoesJogador, embarcacoesComp):
     while embarcacoesJogador > 0 and embarcacoesComp > 0:
         tabuleiroComputador(embarcacoesComp)
@@ -148,9 +158,11 @@ def batalha(nomeJogador, embarcacoesJogador, embarcacoesComp):
             print(f"\033[1;31m\nPoxa! O computador venceu \nObrigada por jogar nosso jogo! \nDesenvolvido por Fernanda Pinho, Isabela Louise e Julia Molina\n\033[1;31m")
             break
 
+#contador das embarcações
 embarcacoesComp=7
 embarcacoesJogador=7
 
+#chamando as funções para o jogo rodar
 nomeJogador = imprimeBoasVindas()
 tabuleiroComputador(embarcacoesComp)
 separarTabuleiros()
