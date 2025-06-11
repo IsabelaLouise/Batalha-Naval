@@ -1,5 +1,4 @@
 import random
-import os 
 
 #tabuleiro em forma de matriz do jogo
 tabuleiroJogadorMatriz = [["🌊"for i in range(10)] for i in range(5)]
